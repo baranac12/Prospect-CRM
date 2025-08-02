@@ -2,6 +2,7 @@ package com.prospect.crm.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,7 +35,9 @@ public class UserRequestDto {
     private String username;
 
     @Size(min = 8, message = "{crm.constraint.password.size}")
+    @Pattern(regexp = ".*[A-Z].*", message = "Password must contain at least one uppercase letter")
     private String password;
+
 
     private Long roleId;
     private Long subscriptionId;

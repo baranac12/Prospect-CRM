@@ -3,6 +3,7 @@ package com.prospect.crm.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -40,9 +41,11 @@ public class Users {
     @Size(min = 5, max = 50, message = "{crm.constraint.username.size")
     private String username;
 
-    @NotBlank(message = "crm.constraint.password.notblank}")
-    @Size(min = 8, message = "crm.constraint.password.size}")
+    @NotBlank
+    @Size(min = 8, message = "{crm.constraint.password.size}")
+    @Pattern(regexp = ".*[A-Z].*", message = "Password must contain at least one uppercase letter")
     private String password;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
