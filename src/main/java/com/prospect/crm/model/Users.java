@@ -14,8 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "users", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"username"})})
+@Table(name = "users")
 public class Users {
     @Id
     @ColumnDefault("nextval('users_id_seq')")
