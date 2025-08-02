@@ -1,13 +1,13 @@
 package com.prospect.crm.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "email_logs")
 public class EmailLog {
@@ -15,11 +15,11 @@ public class EmailLog {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "email_logs_id_gen")
     @SequenceGenerator(name = "email_logs_id_gen", sequenceName = "email_logs_id_seq", initialValue = 1001, allocationSize = 1)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User userId;
+    private Users usersId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "draft_id")
@@ -38,6 +38,6 @@ public class EmailLog {
     private String errorMessage;
 
     @Column(name = "sent_at")
-    private Instant sentAt;
+    private LocalDateTime sentAt;
 
 }

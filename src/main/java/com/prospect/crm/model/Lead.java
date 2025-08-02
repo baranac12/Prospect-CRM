@@ -1,13 +1,14 @@
 package com.prospect.crm.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
-@Getter
-@Setter
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "leads")
 public class Lead {
@@ -15,11 +16,11 @@ public class Lead {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "leads_id_gen")
     @SequenceGenerator(name = "leads_id_gen", sequenceName = "leads_id_seq", initialValue = 1001, allocationSize = 1)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User userId;
+    private Users usersId;
 
     @Column(name = "full_name", length = Integer.MAX_VALUE)
     private String fullName;
@@ -43,6 +44,6 @@ public class Lead {
     private String status;
 
     @Column(name = "created_at")
-    private Instant createdAt;
+    private LocalDateTime createdAt;
 
 }

@@ -1,25 +1,26 @@
 package com.prospect.crm.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
-@Getter
-@Setter
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "rate_limits")
 public class RateLimit {
     @Id
     @ColumnDefault("nextval('rate_limits_id_seq')")
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User userId;
+    private Users usersId;
 
     @Column(name = "daily_limit")
     private Integer dailyLimit;
@@ -28,6 +29,6 @@ public class RateLimit {
     private Integer usedToday;
 
     @Column(name = "reset_at")
-    private Instant resetAt;
+    private LocalDateTime resetAt;
 
 }

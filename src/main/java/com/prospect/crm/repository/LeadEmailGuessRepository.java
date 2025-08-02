@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface LeadEmailGuessRepository extends JpaRepository<LeadEmailGuess, Integer> {
+public interface LeadEmailGuessRepository extends JpaRepository<LeadEmailGuess, Long> {
     List<LeadEmailGuess> findByLeadId(Lead leadId);
     List<LeadEmailGuess> findByIsVerified(boolean isVerified);
 } 

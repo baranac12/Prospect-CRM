@@ -1,32 +1,32 @@
 package com.prospect.crm.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "payments")
 public class Payment {
     @Id
     @ColumnDefault("nextval('payments_id_seq')")
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User userId;
+    private Users usersId;
 
     @Column(name = "amount")
     private BigDecimal amount;
 
     @Column(name = "payment_date")
-    private Instant paymentDate;
+    private LocalDateTime paymentDate;
 
     @Column(name = "status", length = Integer.MAX_VALUE)
     private String status;

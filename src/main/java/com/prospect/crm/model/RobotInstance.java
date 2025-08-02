@@ -4,21 +4,22 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
-@Getter
-@Setter
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "robot_instances")
 public class RobotInstance {
     @Id
     @ColumnDefault("nextval('robot_instances_id_seq')")
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "robot_type", length = Integer.MAX_VALUE)
     private String robotType;
@@ -30,9 +31,9 @@ public class RobotInstance {
     private String launchedBy;
 
     @Column(name = "launch_time")
-    private Instant launchTime;
+    private LocalDateTime launchTime;
 
     @Column(name = "completed_time")
-    private Instant completedTime;
+    private LocalDateTime completedTime;
 
 }

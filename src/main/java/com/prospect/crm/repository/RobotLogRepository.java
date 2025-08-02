@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RobotLogRepository extends JpaRepository<RobotLog, Integer> {
+public interface RobotLogRepository extends JpaRepository<RobotLog, Long> {
     List<RobotLog> findByRobotInstanceId(RobotInstance robotInstanceId);
     List<RobotLog> findByLogLevel(String logLevel);
     List<RobotLog> findByMessageContainingIgnoreCase(String message);
