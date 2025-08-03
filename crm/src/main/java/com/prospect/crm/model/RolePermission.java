@@ -2,7 +2,6 @@ package com.prospect.crm.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 
@@ -15,7 +14,7 @@ import java.time.LocalDateTime;
 public class RolePermission {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_permission_seq")
-    @SequenceGenerator(name = "role_permission_seq", sequenceName = "role_permissions_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "role_permission_seq", sequenceName = "role_permissions_id_seq", initialValue = 1001, allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 

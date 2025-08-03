@@ -1,7 +1,9 @@
 package com.prospect.crm.service;
 
+import com.prospect.crm.constant.ErrorCode;
 import com.prospect.crm.dto.UserListDto;
 import com.prospect.crm.dto.UserRequestDto;
+import com.prospect.crm.exception.ResourceNotFoundException;
 import com.prospect.crm.exception.ValidationException;
 import com.prospect.crm.mapper.UserMapper;
 import com.prospect.crm.model.Users;
@@ -40,7 +42,8 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Users users = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+        Users users = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
         return User.builder()
                 .username(users.getUsername())
                 .password(users.getPassword())
@@ -56,14 +59,20 @@ public class UserService implements UserDetailsService {
     }
 
     public UserListDto getUserById(Long id) {
-        return userRepository.findById(id).map(UserMapper::toUserList).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return userRepository.findById(id)
+                .map(UserMapper::toUserList)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
     }
 
     public ResponseEntity<UserListDto> create(UserRequestDto userRequestDto) {
+        // Check if username already exists
         if (userRepository.findByUsername(userRequestDto.getUsername()).isPresent()) {
-            throw new ValidationException("Username already exists");
-        } else if (userRepository.findByEmail(userRequestDto.getEmail()).isPresent()) {
-            throw new ValidationException("Email already exists"); //asdasfasf
+            throw new ValidationException(ErrorCode.USERNAME_ALREADY_EXISTS.getMessage());
+        }
+        
+        // Check if email already exists
+        if (userRepository.findByEmail(userRequestDto.getEmail()).isPresent()) {
+            throw new ValidationException(ErrorCode.EMAIL_ALREADY_EXISTS.getMessage());
         }
 
         Users user = new Users();
@@ -75,29 +84,37 @@ public class UserService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
         user.setIsActive(true);
         user.setCreatedAt(LocalDateTime.now());
-        user.setRoleId(roleRepository.findById(userRequestDto.getRoleId()).orElseThrow(() -> new UsernameNotFoundException("Role not found")));
-        user.setSubscriptionId(subscriptionRepository.findById(userRequestDto.getSubscriptionId()).orElseThrow(() -> new UsernameNotFoundException("Subscription not found")));
+        
+        // Set role
+        user.setRoleId(roleRepository.findById(userRequestDto.getRoleId())
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found with id: " + userRequestDto.getRoleId())));
+        
+        // Set subscription
+        user.setSubscriptionId(subscriptionRepository.findById(userRequestDto.getSubscriptionId())
+                .orElseThrow(() -> new ResourceNotFoundException("Subscription not found with id: " + userRequestDto.getSubscriptionId())));
+        
         userRepository.save(user);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.toUserList(user));
     }
 
     public ResponseEntity<UserListDto> update(UserRequestDto userRequestDto) {
+        Users user = userRepository.findById(userRequestDto.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userRequestDto.getId()));
 
-        Users user = userRepository.findById(userRequestDto.getId()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
+        // Check username uniqueness (excluding current user)
         userRepository.findByUsername(userRequestDto.getUsername())
                 .filter(u -> !u.getId().equals(user.getId()))
                 .ifPresent(u -> {
-                    throw new ValidationException("Username already exists");
+                    throw new ValidationException(ErrorCode.USERNAME_ALREADY_EXISTS.getMessage());
                 });
 
+        // Check email uniqueness (excluding current user)
         userRepository.findByEmail(userRequestDto.getEmail())
                 .filter(u -> !u.getId().equals(user.getId()))
                 .ifPresent(u -> {
-                    throw new ValidationException("Email already exists");
+                    throw new ValidationException(ErrorCode.EMAIL_ALREADY_EXISTS.getMessage());
                 });
-
 
         user.setName(userRequestDto.getName());
         user.setSurname(userRequestDto.getSurname());
@@ -107,7 +124,8 @@ public class UserService implements UserDetailsService {
         user.setIsActive(true);
         user.setUpdatedAt(LocalDateTime.now());
 
-        if (!userRequestDto.getPassword().isEmpty() && !userRequestDto.getPassword().isBlank()) {
+        // Update password only if provided
+        if (userRequestDto.getPassword() != null && !userRequestDto.getPassword().isEmpty() && !userRequestDto.getPassword().isBlank()) {
             user.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
         }
 
@@ -117,10 +135,10 @@ public class UserService implements UserDetailsService {
     }
 
     public ResponseEntity<String> delete(Long id) {
-        Users user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        Users user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
         user.setIsActive(false);
         userRepository.save(user);
         return ResponseEntity.noContent().build();
     }
-
 }

@@ -9,7 +9,6 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 
 @Builder
@@ -21,7 +20,7 @@ import org.hibernate.annotations.ColumnDefault;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_seq")
-    @SequenceGenerator(name = "role_seq", sequenceName = "roles_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "role_seq", sequenceName = "roles_id_seq", initialValue = 1001, allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 

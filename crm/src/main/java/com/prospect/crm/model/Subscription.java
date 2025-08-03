@@ -2,7 +2,6 @@ package com.prospect.crm.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -16,7 +15,7 @@ import java.time.LocalDateTime;
 public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subscription_seq")
-    @SequenceGenerator(name = "subscription_seq", sequenceName = "subscriptions_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "subscription_seq", sequenceName = "subscriptions_id_seq", initialValue = 1001, allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 

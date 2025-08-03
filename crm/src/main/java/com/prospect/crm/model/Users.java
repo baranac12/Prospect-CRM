@@ -20,7 +20,7 @@ public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
-    @SequenceGenerator(name = "users_id_seq", sequenceName = "users_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "users_id_seq", sequenceName = "users_id_seq", initialValue = 1001, allocationSize = 1)
     private Long id;
 
     @NotBlank(message = "{crm.constraint.name.notblank}")

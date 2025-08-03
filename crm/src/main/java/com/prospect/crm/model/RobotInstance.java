@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 
@@ -22,7 +21,7 @@ import java.time.LocalDateTime;
 public class RobotInstance {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "robot_instance_seq")
-    @SequenceGenerator(name = "robot_instance_seq", sequenceName = "robot_instances_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "robot_instance_seq", sequenceName = "robot_instances_id_seq", initialValue = 1001, allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 
