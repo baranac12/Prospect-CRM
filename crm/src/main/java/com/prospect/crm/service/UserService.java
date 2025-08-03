@@ -63,7 +63,7 @@ public class UserService implements UserDetailsService {
         if (userRepository.findByUsername(userRequestDto.getUsername()).isPresent()) {
             throw new ValidationException("Username already exists");
         } else if (userRepository.findByEmail(userRequestDto.getEmail()).isPresent()) {
-            throw new ValidationException("Email already exists");
+            throw new ValidationException("Email already exists"); //asdasfasf
         }
 
         Users user = new Users();
