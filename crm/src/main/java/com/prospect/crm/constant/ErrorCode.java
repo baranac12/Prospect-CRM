@@ -1,5 +1,11 @@
 package com.prospect.crm.constant;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
 public enum ErrorCode {
     
     // General Errors (ERR_1000-ERR_1999)
@@ -35,11 +41,12 @@ public enum ErrorCode {
     ROLE_IN_USE("ERR_3003", "Role is currently in use"),
     
     // Subscription Related Errors (ERR_4000-ERR_4999)
-    SUBSCRIPTION_NOT_FOUND("ERR_4000", "Subscription not found"),
-    SUBSCRIPTION_EXPIRED("ERR_4001", "Subscription has expired"),
-    SUBSCRIPTION_LIMIT_EXCEEDED("ERR_4002", "Subscription limit exceeded"),
-    SUBSCRIPTION_INACTIVE("ERR_4003", "Subscription is inactive"),
+    SUBSCRIPTION_TYPE_NOT_FOUND("ERR_4000", "Subscription not found"),
+    SUBSCRIPTION_TYPE_EXPIRED("ERR_4001", "Subscription has expired"),
+    SUBSCRIPTION_TYPE_LIMIT_EXCEEDED("ERR_4002", "Subscription limit exceeded"),
+    SUBSCRIPTION_TYPE_INACTIVE("ERR_4003", "Subscription is inactive"),
     PAYMENT_REQUIRED("ERR_4004", "Payment required"),
+    SUBSCRIPTION_TYPE_ALREADY_EXISTS("ERR_4005", "Lead already exists"),
     
     // Lead Related Errors (ERR_5000-ERR_5999)
     LEAD_NOT_FOUND("ERR_5000", "Lead not found"),
@@ -99,15 +106,7 @@ public enum ErrorCode {
         this.code = code;
         this.message = message;
     }
-    
-    public String getCode() {
-        return code;
-    }
-    
-    public String getMessage() {
-        return message;
-    }
-    
+
     public static ErrorCode fromCode(String code) {
         for (ErrorCode errorCode : values()) {
             if (errorCode.getCode().equals(code)) {

@@ -168,7 +168,7 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse.error(
                         "Subscription error",
-                        ErrorCode.SUBSCRIPTION_INACTIVE.getCode(),
+                        ErrorCode.SUBSCRIPTION_TYPE_INACTIVE.getCode(),
                         ex.getMessage()
                 ));
     }

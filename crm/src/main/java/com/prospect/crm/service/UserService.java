@@ -8,7 +8,7 @@ import com.prospect.crm.exception.ValidationException;
 import com.prospect.crm.mapper.UserMapper;
 import com.prospect.crm.model.Users;
 import com.prospect.crm.repository.RoleRepository;
-import com.prospect.crm.repository.SubscriptionRepository;
+import com.prospect.crm.repository.SubscriptionTypeRepository;
 import com.prospect.crm.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,21 +29,20 @@ import static java.util.stream.Collectors.toList;
 @Slf4j
 @Service
 public class UserService implements UserDetailsService {
+
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final SubscriptionRepository subscriptionRepository;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, SubscriptionRepository subscriptionRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-        this.subscriptionRepository = subscriptionRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Users users = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+                .orElseThrow(() -> new UsernameNotFoundException(ErrorCode.USER_NOT_FOUND + " :" + username));
         return User.builder()
                 .username(users.getUsername())
                 .password(users.getPassword())
@@ -61,7 +60,7 @@ public class UserService implements UserDetailsService {
     public UserListDto getUserById(Long id) {
         return userRepository.findById(id)
                 .map(UserMapper::toUserList)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND + " :" + id));
     }
 
     public ResponseEntity<UserListDto> create(UserRequestDto userRequestDto) {
@@ -87,11 +86,7 @@ public class UserService implements UserDetailsService {
         
         // Set role
         user.setRoleId(roleRepository.findById(userRequestDto.getRoleId())
-                .orElseThrow(() -> new ResourceNotFoundException("Role not found with id: " + userRequestDto.getRoleId())));
-        
-        // Set subscription
-        user.setSubscriptionId(subscriptionRepository.findById(userRequestDto.getSubscriptionId())
-                .orElseThrow(() -> new ResourceNotFoundException("Subscription not found with id: " + userRequestDto.getSubscriptionId())));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.ROLE_NOT_FOUND + " :" + userRequestDto.getRoleId())));
         
         userRepository.save(user);
 
@@ -100,7 +95,7 @@ public class UserService implements UserDetailsService {
 
     public ResponseEntity<UserListDto> update(UserRequestDto userRequestDto) {
         Users user = userRepository.findById(userRequestDto.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userRequestDto.getId()));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND + " :" + userRequestDto.getId()));
 
         // Check username uniqueness (excluding current user)
         userRepository.findByUsername(userRequestDto.getUsername())
@@ -136,7 +131,7 @@ public class UserService implements UserDetailsService {
 
     public ResponseEntity<String> delete(Long id) {
         Users user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND + " :" + id));
         user.setIsActive(false);
         userRepository.save(user);
         return ResponseEntity.noContent().build();
