@@ -38,7 +38,7 @@ public class UserSubsInfoController {
          userSubsInfo.setId(id);
          return userSubsInfoService.update(userSubsInfo);
      }
-     @DeleteMapping
+     @DeleteMapping("/{id}")
      public ResponseEntity<ApiResponse<UserSubsInfo>> deleteUserSubsInfo(@PathVariable("id") Long id) {
          return userSubsInfoService.delete(id);
      }
