@@ -35,12 +35,13 @@ public class RoleController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Role>> updateRole(@RequestBody Role role) {
+    public ResponseEntity<ApiResponse<Role>> updateRole(@PathVariable Long id ,@RequestBody Role role) {
         return roleService.update(role);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteRole(@PathVariable Long id) {
-        return roleService.delete(id);
+    public ResponseEntity<ApiResponse<String>> deleteRole(@PathVariable Long id) {
+        roleService.delete(id);
+        return ResponseEntity.ok().body(ApiResponse.success("Role deleted"));
     }
 }

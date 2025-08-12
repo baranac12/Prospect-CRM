@@ -1,6 +1,7 @@
 package com.prospect.crm.service;
 
 import com.prospect.crm.constant.ErrorCode;
+import com.prospect.crm.dto.ApiResponse;
 import com.prospect.crm.dto.UserListDto;
 import com.prospect.crm.dto.UserRequestDto;
 import com.prospect.crm.exception.ResourceNotFoundException;
@@ -8,7 +9,6 @@ import com.prospect.crm.exception.ValidationException;
 import com.prospect.crm.mapper.UserMapper;
 import com.prospect.crm.model.Users;
 import com.prospect.crm.repository.RoleRepository;
-import com.prospect.crm.repository.SubscriptionTypeRepository;
 import com.prospect.crm.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -63,7 +63,7 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND + " :" + id));
     }
 
-    public ResponseEntity<UserListDto> create(UserRequestDto userRequestDto) {
+    public ResponseEntity<ApiResponse<UserListDto>> create(UserRequestDto userRequestDto) {
         // Check if username already exists
         if (userRepository.findByUsername(userRequestDto.getUsername()).isPresent()) {
             throw new ValidationException(ErrorCode.USERNAME_ALREADY_EXISTS.getMessage());
@@ -90,10 +90,10 @@ public class UserService implements UserDetailsService {
         
         userRepository.save(user);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.toUserList(user));
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(UserMapper.toUserList(user)));
     }
 
-    public ResponseEntity<UserListDto> update(UserRequestDto userRequestDto) {
+    public ResponseEntity<ApiResponse<UserListDto>> update(UserRequestDto userRequestDto) {
         Users user = userRepository.findById(userRequestDto.getId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND + " :" + userRequestDto.getId()));
 
@@ -126,7 +126,7 @@ public class UserService implements UserDetailsService {
 
         userRepository.save(user);
 
-        return ResponseEntity.status(HttpStatus.OK).body(UserMapper.toUserList(user));
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success(UserMapper.toUserList(user)));
     }
 
     public ResponseEntity<String> delete(Long id) {

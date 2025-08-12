@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 
@@ -30,5 +31,7 @@ public class UserSubsInfo {
     private LocalDateTime subsStartDate;
     private LocalDateTime subsEndDate;
     private boolean paymentCheck;
+    @ColumnDefault("true")
+    private boolean isActive;
 
 }

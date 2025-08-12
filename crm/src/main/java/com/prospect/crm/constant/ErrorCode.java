@@ -1,9 +1,6 @@
 package com.prospect.crm.constant;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 public enum ErrorCode {
@@ -39,6 +36,7 @@ public enum ErrorCode {
     ROLE_ALREADY_EXISTS("ERR_3001", "Role already exists"),
     INSUFFICIENT_PERMISSIONS("ERR_3002", "Insufficient permissions"),
     ROLE_IN_USE("ERR_3003", "Role is currently in use"),
+    ROLE_EMPTY("ERR_3004", "Role is empty"),
     
     // Subscription Related Errors (ERR_4000-ERR_4999)
     SUBSCRIPTION_TYPE_NOT_FOUND("ERR_4000", "Subscription not found"),
@@ -97,22 +95,20 @@ public enum ErrorCode {
     PASSWORD_MISSING_UPPERCASE("ERR_11006", "Password must contain at least one uppercase letter"),
     PASSWORD_MISSING_LOWERCASE("ERR_11007", "Password must contain at least one lowercase letter"),
     PASSWORD_MISSING_NUMBER("ERR_11008", "Password must contain at least one number"),
-    PASSWORD_MISSING_SPECIAL_CHAR("ERR_11009", "Password must contain at least one special character");
-    
+    PASSWORD_MISSING_SPECIAL_CHAR("ERR_11009", "Password must contain at least one special character"),
+
+    USER_SUBS_INFO_NOT_FOUND("ERR_12000", "User Subs not found"),
+    USER_SUBS_INFO_EXPIRED("ERR_12001", "User Subs has expired"),
+    USER_SUBS_INFO_INACTIVE("ERR_12003", "User Subs is inactive"),
+    USER_SUBS_INFO_ACTIVE_SUBS("ERR_12005", "The user already has an active subscription"),
+    USER_SUBS_INFO_ALREADY_EXISTS("ERR_12006", "Already has an active subscription");;
+
+
     private final String code;
     private final String message;
     
     ErrorCode(String code, String message) {
         this.code = code;
         this.message = message;
-    }
-
-    public static ErrorCode fromCode(String code) {
-        for (ErrorCode errorCode : values()) {
-            if (errorCode.getCode().equals(code)) {
-                return errorCode;
-            }
-        }
-        return GENERAL_ERROR;
     }
 } 

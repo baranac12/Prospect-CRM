@@ -43,7 +43,7 @@ public class RoleService {
     public ResponseEntity<ApiResponse<Role>> update(Role role) {
         Role roles = getRoleById(role.getId());
         if (roles == null) {
-            throw new ValidationException(ErrorCode.ROLE_ALREADY_EXISTS + " : " + role.getName());
+            throw new ValidationException(ErrorCode.ROLE_NOT_FOUND + " : " + role.getId());
         }
         roles.setName(role.getName());
         roleRepository.save(roles);

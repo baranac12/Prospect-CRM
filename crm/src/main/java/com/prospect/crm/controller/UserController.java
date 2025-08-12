@@ -35,10 +35,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<UserListDto>> createUser(@Valid @RequestBody UserRequestDto userRequestDto) {
-        ResponseEntity<UserListDto> response = userService.create(userRequestDto);
-        UserListDto user = response.getBody();
-        return ResponseEntity.status(response.getStatusCode())
-                .body(ApiResponse.success(user, "User created successfully"));
+        return  userService.create(userRequestDto);
     }
 
     @PutMapping("/{id}")
@@ -46,10 +43,7 @@ public class UserController {
             @PathVariable Long id,
             @Valid @RequestBody UserRequestDto userRequestDto) {
         userRequestDto.setId(id);
-        ResponseEntity<UserListDto> response = userService.update(userRequestDto);
-        UserListDto user = response.getBody();
-        return ResponseEntity.status(response.getStatusCode())
-                .body(ApiResponse.success(user, "User updated successfully"));
+        return userService.update(userRequestDto);
     }
 
     @DeleteMapping("/{id}")
