@@ -19,7 +19,7 @@ public class SubscriptionScheduler {
     @Scheduled(cron = "0 0 0 * * ?")
     public void deactivateExpiredSubscriptions() {
         List<UserSubsInfo> expiredSubs = userSubsInfoRepository
-                .findAllBySubsEndDateBeforeAndIsActiveTrue(LocalDateTime.now());
+                .findAllBySubsEndDateBeforeAndActiveTrue(LocalDateTime.now());
 
         expiredSubs.forEach(sub -> sub.setActive(false));
         userSubsInfoRepository.saveAll(expiredSubs);

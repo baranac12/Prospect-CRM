@@ -23,13 +23,13 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<UserListDto>>> getAllUsers() {
-        List<UserListDto> users = userService.getAllUser();
+        List<UserListDto> users = userService.getAllActive();
         return ResponseEntity.ok(ApiResponse.success(users, "Users retrieved successfully"));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<UserListDto>> getUserById(@PathVariable Long id) {
-        UserListDto user = userService.getUserById(id);
+        UserListDto user = userService.getById(id);
         return ResponseEntity.ok(ApiResponse.success(user, "User retrieved successfully"));
     }
 
@@ -42,8 +42,7 @@ public class UserController {
     public ResponseEntity<ApiResponse<UserListDto>> updateUser(
             @PathVariable Long id,
             @Valid @RequestBody UserRequestDto userRequestDto) {
-        userRequestDto.setId(id);
-        return userService.update(userRequestDto);
+        return userService.update(id,userRequestDto);
     }
 
     @DeleteMapping("/{id}")

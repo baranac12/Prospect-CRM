@@ -18,13 +18,13 @@ public class SubscriptionTypeController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<SubscriptionType>>> getAllSubscriptionTypes() {
-        return ResponseEntity.ok(ApiResponse.success(subscriptionTypeService.getAllSubscriptionTypes(), "Subscription types retrieved successfully"));
+    public ResponseEntity<ApiResponse<List<SubscriptionType>>> getAll() {
+        return ResponseEntity.ok(ApiResponse.success(subscriptionTypeService.getAllActive(), "Subscription types retrieved successfully"));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<SubscriptionType>> getSubscriptionTypesId(@PathVariable Long id) {
-        return ResponseEntity.ok(ApiResponse.success(subscriptionTypeService.getSubscriptionTypeById(id), "Subscription type retrieved successfully"));
+        return ResponseEntity.ok(ApiResponse.success(subscriptionTypeService.getById(id), "Subscription type retrieved successfully"));
     }
 
     @PostMapping
@@ -33,8 +33,7 @@ public class SubscriptionTypeController {
     }
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<SubscriptionType>> updateSubscriptionType(@PathVariable Long id, @RequestBody SubscriptionType subscriptionType) {
-        subscriptionType.setId(id);
-        return subscriptionTypeService.update(subscriptionType);
+        return subscriptionTypeService.update(id,subscriptionType);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<SubscriptionType>> deleteSubscriptionType(@PathVariable Long id) {

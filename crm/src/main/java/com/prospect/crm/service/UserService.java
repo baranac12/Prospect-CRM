@@ -50,14 +50,13 @@ public class UserService implements UserDetailsService {
                 .build();
     }
 
-    public List<UserListDto> getAllUser() {
-        return userRepository.findAll().stream()
-                .filter(Users::getIsActive)
+    public List<UserListDto> getAllActive() {
+        return userRepository.findAllByIsActiveTrue().stream()
                 .map(UserMapper::toUserList)
                 .collect(toList());
     }
 
-    public UserListDto getUserById(Long id) {
+    public UserListDto getById(Long id) {
         return userRepository.findById(id)
                 .map(UserMapper::toUserList)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND + " :" + id));
@@ -93,8 +92,8 @@ public class UserService implements UserDetailsService {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(UserMapper.toUserList(user)));
     }
 
-    public ResponseEntity<ApiResponse<UserListDto>> update(UserRequestDto userRequestDto) {
-        Users user = userRepository.findById(userRequestDto.getId())
+    public ResponseEntity<ApiResponse<UserListDto>> update(Long id, UserRequestDto userRequestDto) {
+        Users user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND + " :" + userRequestDto.getId()));
 
         // Check username uniqueness (excluding current user)

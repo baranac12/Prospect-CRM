@@ -21,15 +21,16 @@ public class SubscriptionTypeService {
     public SubscriptionTypeService(SubscriptionTypeRepository subscriptionTypeRepository) {
         this.subscriptionTypeRepository = subscriptionTypeRepository;
     }
-
-    public List<SubscriptionType> getAllSubscriptionTypes() {
-        return subscriptionTypeRepository.findAll()
-                .stream()
-                .filter(SubscriptionType::getIsActive)
-                .toList();
+    public List<SubscriptionType> getAll() {
+        return subscriptionTypeRepository.findAll();
     }
 
-    public SubscriptionType getSubscriptionTypeById(Long id) {
+
+    public List<SubscriptionType> getAllActive() {
+        return subscriptionTypeRepository.findAllByIsActiveTrue();
+    }
+
+    public SubscriptionType getById(Long id) {
         return subscriptionTypeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(ErrorCode.SUBSCRIPTION_TYPE_NOT_FOUND +" :"+ id));
     }
 
@@ -40,8 +41,8 @@ public class SubscriptionTypeService {
         subscriptionTypeRepository.save(subscriptionType);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(subscriptionType,"Subscription type created"));
     }
-    public ResponseEntity<ApiResponse<SubscriptionType>> update(SubscriptionType subscriptionType) {
-        SubscriptionType existingSubscriptionType = getSubscriptionTypeById(subscriptionType.getId());
+    public ResponseEntity<ApiResponse<SubscriptionType>> update(Long id, SubscriptionType subscriptionType) {
+        SubscriptionType existingSubscriptionType = getById(id);
         if (existingSubscriptionType == null) {
             throw new ResourceNotFoundException(ErrorCode.SUBSCRIPTION_TYPE_NOT_FOUND + " : " + subscriptionType.getName());
         }
@@ -52,7 +53,7 @@ public class SubscriptionTypeService {
         return ResponseEntity.ok(ApiResponse.success(existingSubscriptionType,"Subscription type updated"));
     }
     public ResponseEntity<ApiResponse<SubscriptionType>> delete(Long id) {
-        SubscriptionType subscriptionType = getSubscriptionTypeById(id);
+        SubscriptionType subscriptionType = getById(id);
         subscriptionType.setIsActive(false);
         subscriptionTypeRepository.save(subscriptionType);
         return ResponseEntity.ok(ApiResponse.success(subscriptionType,"Subscription type deleted"));

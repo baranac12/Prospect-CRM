@@ -27,7 +27,7 @@ public class UserSubsInfoService {
         return userSubsInfoRepository.findAll();
     }
     public List<UserSubsInfo> findAllActive() {
-        return userSubsInfoRepository.findAll().stream().filter(UserSubsInfo::isActive).toList();
+        return userSubsInfoRepository.findByActiveTrue().stream().toList();
     }
 
     public UserSubsInfo findById(Long id) {
@@ -55,11 +55,8 @@ public class UserSubsInfoService {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(userSubsInfo,"User Subs created"));
     }
 
-    public ResponseEntity<ApiResponse<UserSubsInfo>> update(UserSubsInfo userSubsInfo) {
-        UserSubsInfo updatedUserSubsInfo = findById(userSubsInfo.getId());
-        if (updatedUserSubsInfo == null) {
-            throw new ResourceNotFoundException(ErrorCode.USER_SUBS_INFO_NOT_FOUND + " :" + userSubsInfo.getId());
-        }
+    public ResponseEntity<ApiResponse<UserSubsInfo>> update(Long id , UserSubsInfo userSubsInfo) {
+        UserSubsInfo updatedUserSubsInfo = findById(id);
         updatedUserSubsInfo.setSubscriptionTypeId(userSubsInfo.getSubscriptionTypeId());
 
         if(userSubsInfoRepository.findByUsersId(userSubsInfo.getUsersId())

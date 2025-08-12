@@ -34,8 +34,7 @@ public class UserSubsInfoController {
      }
      @PutMapping("/{id}")
      public ResponseEntity<ApiResponse<UserSubsInfo>> updateUserSubsInfo(@PathVariable("id") Long id, @RequestBody UserSubsInfo userSubsInfo) {
-         userSubsInfo.setId(id);
-         return userSubsInfoService.update(userSubsInfo);
+         return userSubsInfoService.update(id,userSubsInfo);
      }
      @DeleteMapping("/{id}")
      public ResponseEntity<ApiResponse<UserSubsInfo>> deleteUserSubsInfo(@PathVariable("id") Long id) {

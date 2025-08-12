@@ -21,12 +21,12 @@ public class RoleController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<Role>>> getAllUser() {
-        return ResponseEntity.ok(ApiResponse.success(roleService.getAllRoles()));
+        return ResponseEntity.ok(ApiResponse.success(roleService.getAll()));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Role>> getRoleById(@PathVariable Long id) {
-        return ResponseEntity.ok(ApiResponse.success(roleService.getRoleById(id)));
+        return ResponseEntity.ok(ApiResponse.success(roleService.getById(id)));
     }
 
     @PostMapping
@@ -36,7 +36,7 @@ public class RoleController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<Role>> updateRole(@PathVariable Long id ,@RequestBody Role role) {
-        return roleService.update(role);
+        return roleService.update(id,role);
     }
 
     @DeleteMapping("/{id}")
