@@ -20,24 +20,28 @@ public class UserSubsInfoController {
      }
 
      @GetMapping
-     public ResponseEntity<ApiResponse<List<UserSubsInfo>>> getAllUserSubsInfo() {
+     public ResponseEntity<ApiResponse<List<UserSubsInfo>>> getAll() {
          return ResponseEntity.ok().body(ApiResponse.success(userSubsInfoService.findAll(),"User Subs Info retrieved successfully"));
      }
 
      @GetMapping("/{id}")
-     public ResponseEntity<ApiResponse<UserSubsInfo>> getUserSubsInfoById(@PathVariable("id") Long id) {
+     public ResponseEntity<ApiResponse<UserSubsInfo>> getById(@PathVariable("id") Long id) {
          return ResponseEntity.ok().body(ApiResponse.success(userSubsInfoService.findById(id),"User Subs Info retrieved successfully"));
      }
+     @GetMapping("/active")
+     public ResponseEntity<ApiResponse<List<UserSubsInfo>>> getActive() {
+         return ResponseEntity.ok().body(ApiResponse.success(userSubsInfoService.findAllActive(),"User Subs Info retrieved successfully"));
+     }
      @PostMapping
-     public ResponseEntity<ApiResponse<UserSubsInfo>> addUserSubsInfo(@RequestBody UserSubsInfo userSubsInfo) {
+     public ResponseEntity<ApiResponse<UserSubsInfo>> create(@RequestBody UserSubsInfo userSubsInfo) {
          return userSubsInfoService.create(userSubsInfo);
      }
      @PutMapping("/{id}")
-     public ResponseEntity<ApiResponse<UserSubsInfo>> updateUserSubsInfo(@PathVariable("id") Long id, @RequestBody UserSubsInfo userSubsInfo) {
+     public ResponseEntity<ApiResponse<UserSubsInfo>> update(@PathVariable("id") Long id, @RequestBody UserSubsInfo userSubsInfo) {
          return userSubsInfoService.update(id,userSubsInfo);
      }
      @DeleteMapping("/{id}")
-     public ResponseEntity<ApiResponse<UserSubsInfo>> deleteUserSubsInfo(@PathVariable("id") Long id) {
+     public ResponseEntity<ApiResponse<UserSubsInfo>> delete(@PathVariable("id") Long id) {
          return userSubsInfoService.delete(id);
      }
  }
