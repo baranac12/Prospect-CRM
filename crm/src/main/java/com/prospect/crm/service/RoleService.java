@@ -52,5 +52,29 @@ public class RoleService {
         return ResponseEntity.ok(ApiResponse.success(null, "Role Deleted"));
     }
 
+    /**
+     * Role'a atanmış kullanıcı sayısını getirir
+     */
+    public Long getUserCount(Long roleId) {
+        // Bu method'u implement etmek için UserRepository'ye method eklemek gerekir
+        // Şimdilik placeholder olarak 0 döndürüyoruz
+        return 0L;
+    }
+
+    /**
+     * Role'ı isme göre arar
+     */
+    public Role getByName(String name) {
+        return roleRepository.findByName(name)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.ROLE_NOT_FOUND + " : " + name));
+    }
+
+    /**
+     * Aktif role'ları getirir
+     */
+    public List<Role> getAllActive() {
+        return roleRepository.findAllByIsActiveTrue();
+    }
+
 
 }

@@ -6,7 +6,6 @@ import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 
-@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,30 +15,27 @@ public class OauthToken {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "oauth_tokens_id_gen")
     @SequenceGenerator(name = "oauth_tokens_id_gen", sequenceName = "oauth_tokens_id_seq", initialValue = 1001, allocationSize = 1)
-    @Column(name = "id", nullable = false)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private Users userId;
 
-    @Column(name = "provider", length = Integer.MAX_VALUE)
-    private String provider;
-
-    @Column(name = "access_token", length = Integer.MAX_VALUE)
+    private String provider; // GOOGLE, MICROSOFT
+    private String email; // Connected email address
     private String accessToken;
-
-    @Column(name = "refresh_token", length = Integer.MAX_VALUE)
     private String refreshToken;
-
-    @Column(name = "issued_at")
     private LocalDateTime issuedAt;
-
-    @Column(name = "expires_at")
     private LocalDateTime expiresAt;
+    private String scope; // OAuth scopes granted
+    private String tokenType; // Bearer, etc.
 
     @ColumnDefault("false")
-    @Column(name = "revoked")
     private Boolean revoked;
-
+    
+    @ColumnDefault("false")
+    private Boolean expired;
+    
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

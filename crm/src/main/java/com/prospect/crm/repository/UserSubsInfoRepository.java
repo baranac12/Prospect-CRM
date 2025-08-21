@@ -12,7 +12,8 @@ import java.util.Optional;
 
 @Repository
 public interface UserSubsInfoRepository extends JpaRepository<UserSubsInfo, Long> {
-    List<UserSubsInfo> findAllBySubsEndDateBeforeAndActiveTrue(LocalDateTime dateTime);
-    List<UserSubsInfo> findByActiveTrue();
+    List<UserSubsInfo> findAllBySubsEndDateBeforeAndIsActiveTrue(LocalDateTime dateTime);
+    List<UserSubsInfo> findByIsActiveTrue();
     Optional<UserSubsInfo> findByUsersId(Users usersId);
+    Optional<UserSubsInfo> findByUsersIdAndIsActiveTrue(Users usersId);
 }

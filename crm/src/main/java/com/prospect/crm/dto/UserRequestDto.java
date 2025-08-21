@@ -14,8 +14,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRequestDto {
-    private Long id;
-
     @NotBlank(message = "{crm.constraint.name.notblank}")
     @Size(min = 3, max = 50, message = "{crm.constraint.name.size}")
     private String name;
@@ -25,24 +23,19 @@ public class UserRequestDto {
     private String surname;
 
     @NotBlank(message = "{crm.constraint.email.notblank}")
-    @Email(message = "{crm.constraint.email.rules}")
+    @Email(message = "{crm.constraint.email.invalid}")
     private String email;
 
-    @NotBlank(message = "{crm.constraint.phone.notblank}")
-    @Size(min = 11, max = 11, message = "{crm.constraint.phone.size}")
     private String phone;
 
     @NotBlank(message = "{crm.constraint.username.notblank}")
     @Size(min = 5, max = 50, message = "{crm.constraint.username.size}")
     private String username;
 
-    @Size(min = 8, message = "{crm.constraint.password.size}")
-    @Pattern(regexp = ".*[A-Z].*", message = "Password must contain at least one uppercase letter")
+    @Size(min = 6, message = "{crm.constraint.password.size}")
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d).*$", message = "Password must contain at least one letter and one number")
     private String password;
-
 
     private Long roleId;
     private Long subscriptionId;
-
-
 }

@@ -19,24 +19,28 @@ public class SubscriptionTypeController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<SubscriptionType>>> getAll() {
-        return ResponseEntity.ok(ApiResponse.success(subscriptionTypeService.getAllActive(), "Subscription types retrieved successfully"));
+        return ResponseEntity.ok().body(ApiResponse.success(subscriptionTypeService.getAll(),"Subscription type retrieved successfully"));
+    }
+    @GetMapping("/active")
+    public ResponseEntity<ApiResponse<List<SubscriptionType>>> getAllActive() {
+        return ResponseEntity.ok().body(ApiResponse.success(subscriptionTypeService.getAllActive(), "Subscription types retrieved successfully"));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<SubscriptionType>> getSubscriptionTypesId(@PathVariable Long id) {
-        return ResponseEntity.ok(ApiResponse.success(subscriptionTypeService.getById(id), "Subscription type retrieved successfully"));
+    public ResponseEntity<ApiResponse<SubscriptionType>> getById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(ApiResponse.success(subscriptionTypeService.getById(id), "Subscription type retrieved successfully"));
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<SubscriptionType>> addSubscriptionType(@RequestBody SubscriptionType subscriptionType) {
+    public ResponseEntity<ApiResponse<SubscriptionType>> create(@RequestBody SubscriptionType subscriptionType) {
         return subscriptionTypeService.create(subscriptionType);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<SubscriptionType>> updateSubscriptionType(@PathVariable Long id, @RequestBody SubscriptionType subscriptionType) {
+    public ResponseEntity<ApiResponse<SubscriptionType>> update(@PathVariable Long id, @RequestBody SubscriptionType subscriptionType) {
         return subscriptionTypeService.update(id,subscriptionType);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<SubscriptionType>> deleteSubscriptionType(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<SubscriptionType>> delete(@PathVariable Long id) {
         return subscriptionTypeService.delete(id);
     }
 }

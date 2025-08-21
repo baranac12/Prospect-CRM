@@ -19,6 +19,8 @@ public class UserListDto {
     private String email;
     private String phone;
     private String username;
+    private Long roleId;
+    private Boolean isActive;
     private LocalDateTime createdAt;
 
 }

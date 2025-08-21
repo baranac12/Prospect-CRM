@@ -6,16 +6,16 @@ import com.prospect.crm.model.Users;
 public class UserMapper {
 
     public static UserListDto toUserList(Users entity) {
-        return new UserListDto(
-                entity.getId(),
-                entity.getName(),
-                entity.getSurname(),
-                entity.getEmail(),
-                entity.getPhone(),
-                entity.getUsername(),
-                entity.getCreatedAt()
-        );
-
-
+        return UserListDto.builder()
+                .id(entity.getId())
+                .name(entity.getName())
+                .surname(entity.getSurname())
+                .email(entity.getEmail())
+                .phone(entity.getPhone())
+                .username(entity.getUsername())
+                .roleId(entity.getRoleId() != null ? entity.getRoleId().getId() : null)
+                .isActive(entity.getIsActive())
+                .createdAt(entity.getCreatedAt())
+                .build();
     }
 }

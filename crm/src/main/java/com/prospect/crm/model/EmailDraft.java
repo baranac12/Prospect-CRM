@@ -5,7 +5,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Builder
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,7 +15,6 @@ public class EmailDraft {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "email_drafts_id_gen")
     @SequenceGenerator(name = "email_drafts_id_gen", sequenceName = "email_drafts_id_seq", initialValue = 1001, allocationSize = 1)
-    @Column(name = "id", nullable = false)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -26,19 +25,19 @@ public class EmailDraft {
     @JoinColumn(name = "lead_id")
     private Lead leadId;
 
-    @Column(name = "subject", length = Integer.MAX_VALUE)
     private String subject;
-
-    @Column(name = "body", length = Integer.MAX_VALUE)
     private String body;
-
-    @Column(name = "created_by_robot")
+    private String contentType; // text/plain, text/html
+    private String toEmails; // Comma-separated email addresses
+    private String ccEmails; // Comma-separated email addresses
+    private String bccEmails; // Comma-separated email addresses
+    private String attachments; // JSON string of attachment info
     private Boolean createdByRobot;
-
-    @Column(name = "status", length = Integer.MAX_VALUE)
-    private String status;
-
-    @Column(name = "created_at")
+    private String status; // DRAFT, SENT, CANCELLED
     private LocalDateTime createdAt;
-
+    private LocalDateTime updatedAt;
+    private LocalDateTime sentAt;
+    private String provider; // GOOGLE, MICROSOFT, SMTP
+    private String templateName; // If using email template
+    private String templateData; // JSON string of template variables
 }

@@ -15,13 +15,12 @@ public class SubscriptionScheduler {
 
     private final UserSubsInfoRepository userSubsInfoRepository;
 
-    // Her gece 00:00'da çalışır
     @Scheduled(cron = "0 0 0 * * ?")
     public void deactivateExpiredSubscriptions() {
         List<UserSubsInfo> expiredSubs = userSubsInfoRepository
-                .findAllBySubsEndDateBeforeAndActiveTrue(LocalDateTime.now());
+                .findAllBySubsEndDateBeforeAndIsActiveTrue(LocalDateTime.now());
 
-        expiredSubs.forEach(sub -> sub.setActive(false));
+        expiredSubs.forEach(sub -> sub.setIsActive(false));
         userSubsInfoRepository.saveAll(expiredSubs);
     }
 }

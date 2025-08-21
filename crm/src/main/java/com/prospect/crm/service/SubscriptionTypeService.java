@@ -27,7 +27,7 @@ public class SubscriptionTypeService {
 
 
     public List<SubscriptionType> getAllActive() {
-        return subscriptionTypeRepository.findAllByIsActiveTrue();
+        return subscriptionTypeRepository.findByIsActiveTrue();
     }
 
     public SubscriptionType getById(Long id) {
@@ -35,7 +35,7 @@ public class SubscriptionTypeService {
     }
 
     public ResponseEntity<ApiResponse<SubscriptionType>> create(SubscriptionType subscriptionType) {
-        if (subscriptionTypeRepository.findByName(subscriptionType.getName()).isPresent()) {
+        if (subscriptionTypeRepository.findByNameAndIsActiveTrue(subscriptionType.getName()).isPresent()) {
             throw new ValidationException(ErrorCode.SUBSCRIPTION_TYPE_ALREADY_EXISTS + " : " + subscriptionType.getName());
         }
         subscriptionTypeRepository.save(subscriptionType);

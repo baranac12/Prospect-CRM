@@ -1,18 +1,16 @@
 package com.prospect.crm.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "user_subs_info")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "user_subs_info")
 public class UserSubsInfo {
 
     @Id
@@ -29,9 +27,15 @@ public class UserSubsInfo {
     private Users usersId;
 
     private LocalDateTime subsStartDate;
+    
     private LocalDateTime subsEndDate;
-    private boolean paymentCheck;
+    
+    private Boolean paymentCheck;
+    
     @ColumnDefault("true")
-    private boolean isActive;
-
+    private Boolean isActive = true;
+    
+    private LocalDateTime createdAt;
+    
+    private LocalDateTime updatedAt;
 }

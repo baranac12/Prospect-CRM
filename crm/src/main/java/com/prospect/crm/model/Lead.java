@@ -1,14 +1,12 @@
 package com.prospect.crm.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 
-
-@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,8 +16,10 @@ public class Lead {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "leads_id_gen")
     @SequenceGenerator(name = "leads_id_gen", sequenceName = "leads_id_seq", initialValue = 1001, allocationSize = 1)
-    @NotBlank
     private Long id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "users_id", nullable = false)
+    private Users usersId;
 
     private String fullName;
     private String title;
@@ -31,6 +31,5 @@ public class Lead {
     private LocalDateTime createdAt;
 
     @ColumnDefault("true")
-    private boolean isActive;
-
+    private Boolean isActive = true;
 }

@@ -26,31 +26,33 @@ public class UserSubsInfoService {
     public List<UserSubsInfo> findAll() {
         return userSubsInfoRepository.findAll();
     }
+
     public List<UserSubsInfo> findAllActive() {
-        return userSubsInfoRepository.findByActiveTrue().stream().toList();
+        return userSubsInfoRepository.findByIsActiveTrue().stream().toList();
     }
 
     public UserSubsInfo findById(Long id) {
         return userSubsInfoRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_SUBS_INFO_NOT_FOUND + " :" + id ));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_SUBS_INFO_NOT_FOUND.getMessage() + " :" + id ));
     }
+
     public UserSubsInfo findByIdAndActive(Long id) {
         return userSubsInfoRepository.findById(id)
-                .filter(UserSubsInfo::isActive)
-                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_SUBS_INFO_NOT_FOUND + " :" + id ));
+                .filter(UserSubsInfo::getIsActive)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_SUBS_INFO_NOT_FOUND.getMessage() + " :" + id ));
     }
+
     public ResponseEntity<ApiResponse<UserSubsInfo>> create(UserSubsInfo userSubsInfo) {
-        UserSubsInfo newUserSubsInfo = findById(userSubsInfo.getId());
         if (userSubsInfoRepository.findById(userSubsInfo.getId()).isPresent()){
-            throw new ValidationException(ErrorCode.USER_SUBS_INFO_ALREADY_EXISTS + " :" + userSubsInfo.getId());
+            throw new ValidationException(ErrorCode.USER_SUBS_INFO_ALREADY_EXISTS.getMessage() + " :" + userSubsInfo.getId());
         }
         if(userSubsInfoRepository.findByUsersId(userSubsInfo.getUsersId())
-                .filter(UserSubsInfo::isActive).isPresent()){
-            throw new ValidationException(ErrorCode.USER_SUBS_INFO_ACTIVE_SUBS + " :" + userSubsInfo.getId());
+                .filter(UserSubsInfo::getIsActive).isPresent()){
+            throw new ValidationException(ErrorCode.USER_SUBS_INFO_ACTIVE_SUBS.getMessage() + " :" + userSubsInfo.getId());
         }
-        newUserSubsInfo.setActive(true);
-        newUserSubsInfo.setSubsStartDate(LocalDateTime.now());
-        newUserSubsInfo.setSubsEndDate(LocalDateTime.now().plusDays(30));
+        userSubsInfo.setIsActive(true);
+        userSubsInfo.setSubsStartDate(LocalDateTime.now());
+        userSubsInfo.setSubsEndDate(LocalDateTime.now().plusDays(30));
         userSubsInfoRepository.save(userSubsInfo);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(userSubsInfo,"User Subs created"));
     }
@@ -60,18 +62,19 @@ public class UserSubsInfoService {
         updatedUserSubsInfo.setSubscriptionTypeId(userSubsInfo.getSubscriptionTypeId());
 
         if(userSubsInfoRepository.findByUsersId(userSubsInfo.getUsersId())
-                .filter(UserSubsInfo::isActive).isPresent()){
+                .filter(UserSubsInfo::getIsActive).isPresent()){
             updatedUserSubsInfo.setSubsEndDate(updatedUserSubsInfo.getSubsEndDate().plusDays(30));
         }else {
             updatedUserSubsInfo.setSubsStartDate(LocalDateTime.now());
             updatedUserSubsInfo.setSubsEndDate(LocalDateTime.now().plusDays(30));
         }
         userSubsInfoRepository.save(updatedUserSubsInfo);
-        return ResponseEntity.ok(ApiResponse.success(userSubsInfo,"User Subs updated"));
+        return ResponseEntity.ok(ApiResponse.success(updatedUserSubsInfo,"User Subs updated"));
     }
+
     public ResponseEntity<ApiResponse<UserSubsInfo>> delete(Long id) {
         UserSubsInfo deletedUserSubsInfo = findById(id);
-        deletedUserSubsInfo.setActive(false);
+        deletedUserSubsInfo.setIsActive(false);
         userSubsInfoRepository.save(deletedUserSubsInfo);
         return ResponseEntity.ok(ApiResponse.success(deletedUserSubsInfo,"User Subs deleted"));
     }

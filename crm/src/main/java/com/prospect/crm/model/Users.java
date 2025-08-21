@@ -10,11 +10,11 @@ import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "users")
 public class Users {
 
     @Id
@@ -31,11 +31,9 @@ public class Users {
     private String surname;
 
     @NotBlank(message = "{crm.constraint.email.notblank}")
-    @Email(message = "{crm.constraint.email.rules}")
+    @Email(message = "{crm.constraint.email.invalid}")
     private String email;
 
-    @NotBlank(message = "{crm.constraint.phone.notblank}")
-    @Size(min = 11, max = 11, message = "{crm.constraint.phone.size}")
     private String phone;
 
     @NotBlank(message = "{crm.constraint.username.notblank}")

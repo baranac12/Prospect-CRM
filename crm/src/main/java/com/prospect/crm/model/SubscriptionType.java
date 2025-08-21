@@ -5,29 +5,23 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
-@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "subscription_tpye")
+@Table(name = "subscription_type")
 public class SubscriptionType {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subscription_type_seq")
     @SequenceGenerator(name = "subscription_type_seq", sequenceName = "subscription_type_id_seq", initialValue = 1001, allocationSize = 1)
-    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "daily_limit")
+    private String code;
     private Integer dailyLimit;
-
-    @Column(name = "price")
     private BigDecimal price;
-
-    @Column(name = "is_active")
+    private String stripePriceId;
+    private Integer durationInDays;
+    private String description;
     private Boolean isActive;
-
 }
